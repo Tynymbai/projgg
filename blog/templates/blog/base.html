@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'blog/css/style.css' %}">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'post_list' %}">Блог</a></li>
+            <li><a href="#">Теги</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="#">Логин: {{ user.username }}</a></li>
+                <li><a href="{% url 'logout' %}">Выйти</a></li>
+                <li><a href="{% url 'new-post' %}">Запостить</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Войти</a></li>
+                <li><a href="{% url 'signup' %}">Зарегистрироваться</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>

@@ -1,0 +1,36 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    {% if object.author == user %}
+          <div>
+            <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Удалить</a>
+          </div>
+        {% endif %}
+    <h1>{{ object.title }}</h1>
+    <p>{{ object.content }}</p>
+<h3>Комментарий</h3>
+     {% if user.is_authenticated %}
+        <hr>
+        <h3>Добавить комментарий</h3>
+        <form method="post" enctype="multipart/form-data" action="{% url 'post_detail' pk=post.pk %}">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </form>
+    {% else %}
+        <p> <a href="{% url 'login' %}">Войдите</a> чтобы оставить комментарий.</p>
+    {% endif %}
+    {% for comment in comments %}
+        <div class="comment">
+            <h4>{{ comment.author }}</h4>
+            <p>{{ comment.pub_date }}</p>
+            <p>{{ comment.content }}</p>
+        {% if comment.image %}
+        <img style="max-width: 100px" src="{{ comment.image.url }}" alt="{{ comment.content }}">
+    {% endif %}
+        </div>
+    {% empty %}
+        <h1>Нет комментариев.</h1>
+    {% endfor %}
+{% endblock %}

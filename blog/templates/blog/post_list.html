@@ -1,0 +1,18 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+  {% for post in posts %}
+    <article class="post">
+      <header>
+        <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+        <p class="meta">Пользователь <a href="#"> {{ post.author }} </a> запостил в {{ post.pub_date }}</p>
+      </header>
+      <div class="entry">
+        {{ post.body|truncatewords:30|linebreaks }}
+      </div>
+      <a href="{% url 'post_detail' pk=post.pk %}" class="button">Читать больше</a>
+    </article>
+  {% empty %}
+    <p>Нет постов.</p>
+  {% endfor %}
+{% endblock %}
